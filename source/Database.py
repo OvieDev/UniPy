@@ -16,6 +16,7 @@ sys.setrecursionlimit(10000)
 class Database:
     def __init__(self):
         print("Database initializing. Please wait...")
+        self.proto_archive = []
         self.currencies = [Currency("PythonCash","ComputeLabs","\nThis is basic coin initialized every time!", 500, 13000)]
         self.wallets = [Wallet(self.currencies[0],"abcdefg",10000,"ADMIN_WALLET")]
         self.running_sessions = []

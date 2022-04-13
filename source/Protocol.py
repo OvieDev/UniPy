@@ -1,9 +1,13 @@
 from ProtocolException import ProtocolException
 import datetime
 
+from source.Database import Database
+from source.User import User
+
 
 class Protocol:
-    def __init__(self, signer: str, identify: int, time: datetime.datetime, name="DProt"):
+    def __init__(self, signer: User, identify: int, time: datetime.datetime, db: Database, name="DProt"):
+        self.database = db
         self.signer = signer
         self.id = identify
         self.name = name
@@ -12,6 +16,17 @@ class Protocol:
 
     def run_protocol(self):
         try:
-            pass
+            self.database.emit_server_message("Test Protocol sent message")
         except ProtocolException as e:
-            pass
+            print(e)
+            self.valid = False
+        self.database.proto_archive.append({
+            "protocol_id": self.id,
+            "protocol_name": self.name,
+            "protocol_signtime": self.time,
+            "protocol_signer": self.signer.public_key_name,
+            "success": self.valid,
+            "details": [
+                "Test Protocol"
+            ]
+        })
