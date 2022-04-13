@@ -12,12 +12,6 @@ class Protocol:
 
     def run_protocol(self):
         try:
-            if datetime.datetime.now() > self.date_end:
-                raise ProtocolException(self, "Protocol Expired")
-            else:
-                self.proto_code()
+            pass
         except ProtocolException as e:
-            print(e)
-
-    def proto_code(self):
-        pass
+            pass

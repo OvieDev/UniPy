@@ -1,9 +1,13 @@
 import os
 import time
-import crypt
+import bcrypt
+
+from Database import Database
+from Wallet import Wallet
+
 
 class User:
-    def __init__(self, admin, wallet, name, db):
+    def __init__(self, admin:bool, wallet:Wallet, name:str, db: Database):
         self.is_admin = admin
         self.miner = None
         self.wallet = wallet
@@ -11,9 +15,9 @@ class User:
         self.db = db
         self.view = 0
         self.cls = lambda: os.system('cls' if os.name=='nt' else 'clear')
-        self.public_key_name = f"{crypt.crypt('adminpublickey',crypt.mksalt(crypt.METHOD_SHA512, rounds=64))}".encode("utf-8").hex()
+        self.public_key_name = f"{bcrypt.hashpw('adminpasswordlol'.encode('utf-8'), salt=bcrypt.gensalt(128))}".encode("utf-8").hex()
         self.public_key_amount = 0
-        self.private_key_name = f"{crypt.crypt('adminprivatekeylol', crypt.mksalt(crypt.METHOD_SHA512,rounds=128))}".encode("utf-8").hex()
+        self.private_key_name = f"{bcrypt.hashpw('password'.encode('utf-8'), salt=bcrypt.gensalt(128))}".encode("utf-8").hex()
         self.private_key_amount = 0
 
         print("Initializing new user: " + name)
