@@ -1,4 +1,3 @@
-/src/Commands/__init__.py
-/src/Protocols/__init__.py
-/src/__init__.py
-/venv/
+src/Commands/__init__.py
+src/__init__.py
+src/Protocols/__init__.py

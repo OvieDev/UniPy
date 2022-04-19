@@ -1,6 +1,6 @@
-from source.Commands.CmdArgument import CmdArgument
-from source.Protocol import Protocol
-from source.ProtocolException import ProtocolException
+from src.Commands.CmdArgument import CmdArgument
+from src.Protocol import Protocol
+from src.ProtocolException import ProtocolException
 
 # Command flags
 # Flag #0: Admin rights - You need admin permission to use this command

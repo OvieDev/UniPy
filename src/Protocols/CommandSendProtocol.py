@@ -1,12 +1,11 @@
 import datetime
-
-from source.Commands.CmdArgument import CmdArgument
-from source.Commands.Command import Command
-from source.Database import Database
-from source.Protocol import Protocol
-from source.ProtocolException import ProtocolException
-from source.User import User
-from source.Commands.CommandFunctions import *
+from src.Commands.CmdArgument import CmdArgument
+from src.Commands.Command import Command
+from src.Database import Database
+from src.Protocol import Protocol
+from src.ProtocolException import ProtocolException
+from src.User import User
+from src.Commands.CommandFunctions import *
 
 
 class CommandSendProtocol(Protocol):
