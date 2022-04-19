@@ -17,3 +17,9 @@ def help_command(arg):
 def clear_command(arg):
     os.system('cls' if os.name == 'nt' else 'clear')
     print("Cleared!")
+
+
+def ses_create_command(arg):
+    if len(arg[0]) != 3:
+        raise IndexError("Currency name too short or too long (must be 3 characters long)")
+    print("Session created")

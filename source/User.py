@@ -4,7 +4,7 @@ import datetime
 
 from Database import Database
 from Wallet import Wallet
-import source.Protocols.CommandSendProtocol
+import Protocols.CommandSendProtocol
 
 
 class User:
@@ -115,9 +115,9 @@ class User:
             arg_list = cmd_list.copy()
             arg_list.pop(0)
             if len(arg_list)==0:
-                proto = source.Protocols.CommandSendProtocol.CommandSendProtocol(self, 0, datetime.datetime.now(), self.db, cmd_list[0])
+                proto = Protocols.CommandSendProtocol.CommandSendProtocol(self, 0, datetime.datetime.now(), self.db, cmd_list[0])
             else:
-                proto = source.Protocols.CommandSendProtocol.CommandSendProtocol(self, 0, datetime.datetime.now(), self.db, cmd_list[0], arg_list)
+                proto = Protocols.CommandSendProtocol.CommandSendProtocol(self, 0, datetime.datetime.now(), self.db, cmd_list[0], arg_list)
             proto.run_protocol()
 
     def server_log(self, dbmes):

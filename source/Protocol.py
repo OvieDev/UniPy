@@ -1,8 +1,8 @@
 from ProtocolException import ProtocolException
 import datetime
 
-from source.Database import Database
-from source.User import User
+from Database import Database
+import User
 
 
 class Protocol:

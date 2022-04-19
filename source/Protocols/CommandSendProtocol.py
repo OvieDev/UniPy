@@ -1,5 +1,6 @@
 import datetime
 
+from source.Commands.CmdArgument import CmdArgument
 from source.Commands.Command import Command
 from source.Database import Database
 from source.Protocol import Protocol
@@ -11,9 +12,13 @@ from source.Commands.CommandFunctions import *
 class CommandSendProtocol(Protocol):
     def __init__(self, signer: User, identify: int, time: datetime.datetime, db: Database, command: str, *args):
         super().__init__(signer, identify, time, db)
-        self.commands = [Command("help", [False], self, help_command), Command("cls", [False], self, clear_command)]
+        self.commands = [Command("help", [False], self, help_command), Command("cls", [False], self, clear_command),
+                         Command("ses_create", [False], self, ses_create_command, CmdArgument.STRING)]
         self.command_sent = command
-        self.arguments = list(args)
+        if len(args)>0:
+            self.arguments = list(args)[0]
+        else:
+            self.arguments = []
 
     def run_protocol(self):
         try:
