@@ -1,15 +1,16 @@
 import datetime
+
 from src.Commands.CmdArgument import CmdArgument
 from src.Commands.Command import Command
+from src.Commands.CommandFunctions import *
 from src.Database import Database
 from src.Protocol import Protocol
 from src.ProtocolException import ProtocolException
-from src.User import User
-from src.Commands.CommandFunctions import *
+import src.User
 
 
 class CommandSendProtocol(Protocol):
-    def __init__(self, signer: User, identify: int, time: datetime.datetime, db: Database, command: str, *args):
+    def __init__(self, signer: src.User.User, identify: int, time: datetime.datetime, db: Database, command: str, *args):
         super().__init__(signer, identify, time, db)
         self.commands = [Command("help", [False, False, None], self, help_command), Command("cls", [False, False, None], self, clear_command),
                          Command("ses_create", [False, False, True], self, ses_create_command, CmdArgument.STRING),
