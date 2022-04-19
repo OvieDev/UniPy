@@ -2,6 +2,11 @@ from source.Commands.CmdArgument import CmdArgument
 from source.Protocol import Protocol
 from source.ProtocolException import ProtocolException
 
+# Command flags
+# Flag #0: Admin rights - You need admin permission to use this command
+# Flag #1: Server mode - You need to be in server mode to use this command
+# Flag #2: View requirement - True is user view, False is server view
+#
 
 class Command:
     def __init__(self, command_name: str, flags: list, user: Protocol, func, *args):
@@ -14,7 +19,11 @@ class Command:
     def invoke_command(self, args: list):
         try:
             if self.command_flags[0] is True and not self.user.signer.is_admin:
-                raise ProtocolException(self.user, "")
+                raise ProtocolException(self.user, "You do not have permission to use this command")
+            if self.command_flags[1] is True and self.user.signer.view==0:
+                raise ProtocolException(self.user, "You're not in server view")
+            if self.command_flags[2] is True and self.user.signer.view==1 or self.command_flags[2] is False and self.user.signer.view==0:
+                raise ProtocolException(self.user, "You're in wrong view to use this command!")
             if len(args) != len(self.arguments):
                 raise IndexError("Provided arguments number doesn't match with command arguments number")
 
@@ -29,7 +38,7 @@ class Command:
                 elif self.arguments[c] == CmdArgument.BOOL:
                     ni = bool(i)
                 args[c] = ni
-            self.command_function(args)
+            self.command_function(args, self.user)
 
         except Exception as e:
             print("Exception while doing command")

@@ -12,8 +12,9 @@ from source.Commands.CommandFunctions import *
 class CommandSendProtocol(Protocol):
     def __init__(self, signer: User, identify: int, time: datetime.datetime, db: Database, command: str, *args):
         super().__init__(signer, identify, time, db)
-        self.commands = [Command("help", [False], self, help_command), Command("cls", [False], self, clear_command),
-                         Command("ses_create", [False], self, ses_create_command, CmdArgument.STRING)]
+        self.commands = [Command("help", [False, False, None], self, help_command), Command("cls", [False, False, None], self, clear_command),
+                         Command("ses_create", [False, False, True], self, ses_create_command, CmdArgument.STRING),
+                         Command("server_mode", [True, False, None], self, server_mode_move_command)]
         self.command_sent = command
         if len(args)>0:
             self.arguments = list(args)[0]
