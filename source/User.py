@@ -1,11 +1,10 @@
 import os
-import time
 import bcrypt
+import datetime
 
 from Database import Database
 from Wallet import Wallet
-from source.CmdArgument import CmdArgument
-from source.Command import Command
+import source.Protocols.CommandSendProtocol
 
 
 class User:
@@ -17,19 +16,17 @@ class User:
         self.db = db
         self.view = 0
         self.cls = lambda: os.system('cls' if os.name=='nt' else 'clear')
-        self.public_key_name = f"{bcrypt.hashpw('adminpasswordlol'.encode('utf-8'), salt=bcrypt.gensalt(128))}".encode("utf-8").hex()
-        self.public_key_amount = 0
-        self.private_key_name = f"{bcrypt.hashpw('password'.encode('utf-8'), salt=bcrypt.gensalt(128))}".encode("utf-8").hex()
-        self.private_key_amount = 0
+        #self.public_key_name = f"{bcrypt.hashpw('adminpasswordlol'.encode('utf-8'), salt=bcrypt.gensalt(128))}".encode("utf-8").hex()
+        #self.public_key_amount = 0
+        #self.private_key_name = f"{bcrypt.hashpw('password'.encode('utf-8'), salt=bcrypt.gensalt(128))}".encode("utf-8").hex()
+        #self.private_key_amount = 0
 
         print("Initializing new user: " + name)
 
-
-
-# #    def cmd_input(self):
-# #       anws = input(self.username + "/? ")
-# #        if anws == "help":
-# #            print("""
+#    def cmd_input(self):
+#       anws = input(self.username + "/? ")
+#        if anws == "help":
+#            print("""
 #             USER COMMANNDS:
 #              - ses_create: Creates session for default wallet currency for 30$
 #              - transactions: Preview all your transactions
@@ -110,6 +107,18 @@ class User:
 #             print("You're currently in server mode")
 #
 #         self.cmd_input()
+
+    def cmd_input(self):
+        while True:
+            cmd = input("?/ ")
+            cmd_list = cmd.split(" ")
+            arg_list = cmd_list.copy()
+            arg_list.pop(0)
+            if len(arg_list)==0:
+                proto = source.Protocols.CommandSendProtocol.CommandSendProtocol(self, 0, datetime.datetime.now(), self.db, cmd_list[0])
+            else:
+                proto = source.Protocols.CommandSendProtocol.CommandSendProtocol(self, 0, datetime.datetime.now(), self.db, cmd_list[0], arg_list)
+            proto.run_protocol()
 
     def server_log(self, dbmes):
         if self.view == 1:
