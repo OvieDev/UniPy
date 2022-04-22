@@ -1,3 +1,6 @@
+from src.Currency import Currency
+
+
 class Wallet:
     def __init__(self, currency, hash, amount, name):
         self.currency = currency
@@ -17,7 +20,7 @@ class Wallet:
             return amount
 
     def pay_with_dollars(self, dollar_val):
-        amount = dollar_val/self.currency.dollar_price
+        amount = dollar_val / self.currency.dollar_price
         if self.amount - amount < 0:
             print("Cannot proceed payment. Amount too high to be extracted from wallet")
             return 0
@@ -30,16 +33,16 @@ class Wallet:
     def transactions(self):
         print("TRANSACTIONS MADE WITH THIS WALLET:")
         for i in self.__transactions:
-            print(" - "+i)
+            print(" - " + i)
 
     def accept_income(self, key, amount):
-        if key==self.hash:
+        if key == self.hash:
             self.amount += amount
 
     def wallet_info(self):
         walln = ""
         for i in self.name:
-            walln+="*"
+            walln += "*"
         return f"""Wallet:
         
         Currency: {self.currency.name}
@@ -48,3 +51,9 @@ class Wallet:
         Wallet Name: {self.name}
         
                 """
+
+    def convert_from_currency(self, currency: Currency, amount: int):
+        extern_coin_val = currency.coin_to_dollar(amount)
+        coin_amount = self.currency.dollar_to_coin(extern_coin_val)
+        self.currency.add_to_stash(coin_amount * 0.01)
+        return currency.dollar_to_coin(self.currency.coin_to_dollar(coin_amount * 0.99))
