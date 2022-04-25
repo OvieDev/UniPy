@@ -1,4 +1,6 @@
 import os
+import random
+from datetime import datetime
 
 
 def help_command(arg, proto):
@@ -24,6 +26,7 @@ def ses_create_command(arg, proto):
         raise IndexError("Currency name too short or too long (must be 3 characters long)")
     print("Session created")
 
+
 def server_mode_move_command(arg, proto):
     if proto.signer.view == 0:
         print("Going to server view!")
@@ -31,3 +34,9 @@ def server_mode_move_command(arg, proto):
     else:
         print("Going to user view!")
         proto.signer.view = 0
+
+
+def pay_command(arg, proto):
+    from src.Protocols.Hand2HandProtocol import Hand2HandProtocol
+    h2h = Hand2HandProtocol(proto.signer, random.randint(0, 99999999), datetime.now(), proto.database, arg[0], [arg[1]])
+    h2h.run_protocol()

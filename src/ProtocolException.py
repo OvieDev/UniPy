@@ -5,3 +5,6 @@ class ProtocolException(Exception):
 
     def __repr__(self):
         return f"Protocol based exception from protocol {self.protocol.name} with id {self.protocol.id}.\n Message: {self.message}"
+
+    def __str__(self):
+        return repr(self)

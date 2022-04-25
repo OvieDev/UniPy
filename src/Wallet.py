@@ -52,7 +52,7 @@ class Wallet:
         
                 """
 
-    def convert_from_currency(self, currency: Currency, amount: int):
+    def convert_from_currency(self, currency: Currency, amount: float):
         extern_coin_val = currency.coin_to_dollar(amount)
         coin_amount = self.currency.dollar_to_coin(extern_coin_val)
         self.currency.add_to_stash(coin_amount * 0.01)
