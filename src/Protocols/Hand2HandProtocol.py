@@ -28,10 +28,11 @@ class Hand2HandProtocol(Protocol):
 
             total_curr = 0.0
             for i in self.items:
-                if float(i):
+                print(i[:-1])
+                if i[len(i) - 1] == "$" and float(i[:-1]):
+                    total_curr += float(i[:-1])/float(self.signer.wallet.currency.dollar_price)
+                elif float(i):
                     total_curr = float(i)
-                if i[len(i) - 1] == "$" and float(i[:len(i) - 1]):
-                    total_curr += float(i[:len(i) - 1])
                 else:
                     pass
 
@@ -75,3 +76,7 @@ class Hand2HandProtocol(Protocol):
                     f"Reciever: {self.reciever}"
                 ]
             })
+
+    def dollar_str_to_float(self, string):
+        if string[len(str)-1] == "$":
+            return string[:-1]
