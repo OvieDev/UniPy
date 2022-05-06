@@ -11,11 +11,16 @@ class Hand2HandProtocol(Protocol):
                  items: list, name="Hand2Hand"):
         super().__init__(signer, identify, time, db, name=name)
         for i in self.database.connected_users:
-            if i.username == reciever:
+            if i.public_key.hex() == reciever:
                 self.reciever = i
                 break
         else:
-            self.reciever = None
+            for y in self.signer.shortcuts:
+                if y.username==self.reciever:
+                    self.reciever = y
+                    break
+            else:
+                self.reciever = None
         self.items = items
 
     def run_protocol(self):
@@ -23,6 +28,8 @@ class Hand2HandProtocol(Protocol):
             print(self.items)
             if self.reciever is None:
                 raise ProtocolException(self, "Cannot fetch wallet")
+            if self.reciever == self.signer:
+                raise ProtocolException(self, "You cannot send money to yourself")
             if len(self.items) != 1:
                 raise ProtocolException(self, "Invalid credentials")
 
@@ -54,13 +61,14 @@ class Hand2HandProtocol(Protocol):
                 "protocol_id": self.id,
                 "protocol_name": self.name,
                 "protocol_signtime": self.time,
-                "protocol_signer": self.signer.public_key_name,
+                "protocol_signer": self.signer.public_key,
                 "success": self.valid,
                 "details": [
                     "Hand2Hand Protocol HEADER",
                     f"Reciever: {self.reciever}"
                 ]
             })
+            self.database.emit_server_message(f"{self.signer.public_key.hex()} sent {self.reciever.public_key.hex()} {total_curr} {self.reciever.wallet.currency.name}")
 
         except ProtocolException as e:
             self.valid = False
@@ -69,7 +77,7 @@ class Hand2HandProtocol(Protocol):
                 "protocol_id": self.id,
                 "protocol_name": self.name,
                 "protocol_signtime": self.time,
-                "protocol_signer": self.signer.public_key_name,
+                "protocol_signer": self.signer.public_key.hex(),
                 "success": self.valid,
                 "details": [
                     "Hand2Hand Protocol HEADER",
