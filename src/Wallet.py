@@ -1,4 +1,4 @@
-from src.Currency import Currency
+from Currency import Currency
 
 
 class Wallet:

@@ -1,7 +1,7 @@
 import os
 import datetime
 import random
-
+import base64
 import bcrypt
 
 from Database import Database
@@ -9,6 +9,8 @@ from Wallet import Wallet
 import Protocols.CommandSendProtocol
 
 chars = "abcdefghijklmnopqrstuvwxyz1234567890!@#$%^&*()"
+
+
 class User:
     def __init__(self, admin: bool, wallet: Wallet, name: str, db: Database):
         self.is_admin = admin
@@ -18,12 +20,16 @@ class User:
         self.db = db
         self.view = 0
         self.cls = lambda: os.system('cls' if os.name == 'nt' else 'clear')
-        self.public_key = bcrypt.kdf((self.username+str(random.choices(chars,k=32))).encode("utf-8"), bcrypt.gensalt(), 16, 64)
+        self.public_key = bcrypt.kdf(base64.b64encode((self.username+str(random.choices(chars,k=32))).encode("utf-8")), bcrypt.gensalt(), 16, 64)
         self.shortcuts = []
+        self.bitmask = []
+        for i in range(8):
+            self.bitmask.append(bcrypt.kdf(base64.b64encode(str(random.choices(chars, k=64)).encode("utf-8")), bcrypt.gensalt(), 32, 64))
 
         print(self.public_key.hex())
         db.connected_users.append(self)
-        print(db.connected_users)
+        for i in self.bitmask:
+            print(i.hex())
         print("Initializing new user: " + name)
 
     #    def cmd_input(self):
