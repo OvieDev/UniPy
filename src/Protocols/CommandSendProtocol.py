@@ -14,7 +14,8 @@ class CommandSendProtocol(Protocol):
                          Command("cls", [False, False, None], self, clear_command),
                          Command("ses_create", [False, False, True], self, ses_create_command, CmdArgument.STRING),
                          Command("server_mode", [True, False, None], self, server_mode_move_command),
-                         Command("pay", [False, False, True], self, pay_command, CmdArgument.STRING, CmdArgument.STRING)]
+                         Command("pay", [False, False, True], self, pay_command, CmdArgument.STRING, CmdArgument.STRING),
+                         Command("client", [False, False, True], self, client_command)]
         self.command_sent = command
         if len(args)>0:
             self.arguments = list(args)[0]
@@ -25,8 +26,8 @@ class CommandSendProtocol(Protocol):
         try:
             for i in self.commands:
                 if self.command_sent == i.command_name:
-                    i.invoke_command(self.arguments)
-                    break
+                    return i.invoke_command(self.arguments)
+
             else:
                 raise ProtocolException(self, "Unknown command")
         except ProtocolException as e:

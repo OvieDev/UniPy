@@ -129,7 +129,9 @@ class User:
             else:
                 proto = Protocols.CommandSendProtocol.CommandSendProtocol(self, 0, datetime.datetime.now(), self.db,
                                                                           cmd_list[0], arg_list)
-            proto.run_protocol()
+            r = proto.run_protocol()
+            if r is not None:
+                break
 
     def server_log(self, dbmes):
         if self.view == 1:

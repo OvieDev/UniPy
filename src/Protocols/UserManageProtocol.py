@@ -13,6 +13,7 @@ class UserManageProtocol(Protocol):
         super().__init__(signer, identify, time, db, name="UserManager")
         self.direction = inout
         self.client_pointer = ptr
+        print(self.direction)
 
     def run_protocol(self):
         try:
@@ -22,9 +23,9 @@ class UserManageProtocol(Protocol):
                     if i.public_key.hex() == login:
                         login = input("Enter wallet hash: ")
                         if login == i.wallet.hash:
-                            if os.getenv(i.public_key.hex() + "_BITMASK1"):
+                            if os.getenv("_BITMASK"):
                                 if bcrypt.checkpw(str(i.bitmask).encode("utf-8"),
-                                                  bytes.fromhex(os.environ[i.public_key.hex() + "_BITMASK"])):
+                                                  bytes.fromhex(os.environ["_BITMASK"])):
                                     self.signer = i
                                     return i
                                 else:

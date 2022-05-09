@@ -40,3 +40,7 @@ def pay_command(arg, proto):
     from src.Protocols.Hand2HandProtocol import Hand2HandProtocol
     h2h = Hand2HandProtocol(proto.signer, random.randint(0, 99999999), datetime.now(), proto.database, arg[0], [arg[1]])
     h2h.run_protocol()
+
+
+def client_command(arg, proto):
+    return True

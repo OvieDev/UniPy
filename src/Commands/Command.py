@@ -38,7 +38,7 @@ class Command:
                 elif self.arguments[c] == CmdArgument.BOOL:
                     ni = bool(i)
                 args[c] = ni
-            self.command_function(args, self.user)
+            return self.command_function(args, self.user)
 
         except Exception as e:
             print("Exception while doing command")
