@@ -3,7 +3,7 @@ import threading
 import random
 import time
 
-from Currency import Currency
+import Currency
 import Session
 import sys
 
@@ -17,7 +17,7 @@ class Database:
         print("Database initializing. Please wait...")
         self.proto_archive = []
         self.currencies = {
-            "pyc": Currency("PythonCash", "ComputeLabs", "\nThis is basic coin initialized every time!", 500, 13000)}
+            "pyc": Currency.Currency("PythonCash", "ComputeLabs", "\nThis is basic coin initialized every time!", 500, 13000)}
         self.wallets = [Wallet(self.currencies["pyc"], "abcdefg", 10000, "ADMIN_WALLET"), Wallet(self.currencies["pyc"], "ggg", 10, "STD_WALLET")]
         self.running_sessions = []
         self.log = []

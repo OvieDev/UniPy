@@ -2,10 +2,13 @@ import datetime
 import os
 import bcrypt
 
+from src.Currency import Currency
 from src.Database import Database
 from src.Protocol import Protocol
 from src.ProtocolException import ProtocolException
 from src.Protocols.UserManagment import UserManagment
+from src.User import User
+from src.Wallet import Wallet
 
 
 class UserManageProtocol(Protocol):
@@ -38,7 +41,7 @@ class UserManageProtocol(Protocol):
                     raise ProtocolException(self, "Cannot find user")
 
             elif self.direction == UserManagment.LOGOUT and self.client_pointer is not None:
-                r = input("Are you sure you want to logout? [y/n]")
+                r = input("Are you sure you want to logout? [y/n] ")
                 if r.lower() == "y":
                     self.client_pointer = None
                     return True
@@ -46,8 +49,27 @@ class UserManageProtocol(Protocol):
                     print("Cancelled!")
                     return False
             elif self.direction == UserManagment.REGISTER:
-                # TODO register
-                pass
+                username = input("Please choose your username: ")
+
+                if 5 > len(username) > 25:
+                    raise ProtocolException(self, "Username too small or too large")
+
+                w_hash = input("Please select your wallet hash: ")
+
+                if not len(w_hash) > 8 and not len(w_hash) < 22:
+                    raise ProtocolException(self, "Wallet hash to small or too large")
+
+                currency = input("Please choose your currency: ")
+
+                if len(currency) != 3:
+                    raise ProtocolException(self, "Invalid currency")
+                c = Currency.get_currency_from_str(self.database, currency)
+                wallet = Wallet(c, w_hash, 0, "Wallet")
+                u = User(False, wallet, username, self.database)
+                self.database.connected_users.append(u)
+                print("User created!")
+                return u
+
             elif self.direction == UserManagment.DELETE:
                 # TODO delete
                 pass
