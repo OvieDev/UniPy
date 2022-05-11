@@ -70,9 +70,16 @@ class UserManageProtocol(Protocol):
                 print("User created!")
                 return u
 
-            elif self.direction == UserManagment.DELETE:
-                # TODO delete
-                pass
+            elif self.direction == UserManagment.DELETE and self.client_pointer is not None:
+                a = input("Are you sure you want to delete your account? [y/n] ")
+                if a.lower() == "y":
+                    print("Attempting deletion!")
+                    money = self.client_pointer.wallet.amount
+                    self.client_pointer.wallet.currency.add_to_stash(money)
+                    self.client_pointer.wallet.amount = 0
+                    self.database.connected_users.remove(self.client_pointer)
+                    print("Successfully deleted account")
+                    return None
             else:
                 raise ProtocolException(self, "Unknown User Managment Action")
         except ProtocolException as e:

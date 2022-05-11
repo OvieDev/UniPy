@@ -7,7 +7,6 @@ class Currency:
         self.author = author
         self.info = info
         self.dollar_price = dp
-        self.short = self.name[:3]
         self.__max_currency = amount
         self.__current_amount = amount * 0.9
         self.__stash_amount = amount * 0.1

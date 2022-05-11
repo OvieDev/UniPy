@@ -11,7 +11,6 @@ from src.Protocols import UserManagment
 from src.Protocols.UserManageProtocol import UserManageProtocol
 
 
-
 @atexit.register
 def create_bitmask():
     try:
@@ -60,9 +59,12 @@ def client_select():
                 t += 1
         elif a == "3":
             print("registering")
-            user_ptr = UserManageProtocol(t, datetime.now(), db, UserManagment.UserManagment.REGISTER, user_ptr).run_protocol()
+            user_ptr = UserManageProtocol(t, datetime.now(), db, UserManagment.UserManagment.REGISTER,
+                                          user_ptr).run_protocol()
         elif a == "4":
             print("deleting")
+            user_ptr = UserManageProtocol(t, datetime.now(), db, UserManagment.UserManagment.DELETE, user_ptr).run_protocol()
+            print(user_ptr)
 
 
 db = Database()
@@ -74,4 +76,3 @@ user1 = User(False, db.wallets[1], "user1", db)
 user_ptr = None
 print("UniPy Client v0.0.1 Please select operation:")
 client_select()
-
