@@ -6,3 +6,4 @@ class CmdArgument(Enum):
     STRING = 1
     FLOAT = 2
     BOOL = 3
+    STRING_ARGS = 4

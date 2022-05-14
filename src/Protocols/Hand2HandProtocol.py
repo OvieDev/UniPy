@@ -16,28 +16,33 @@ class Hand2HandProtocol(Protocol):
                 break
         else:
             for y in self.signer.shortcuts:
-                if y.username==self.reciever:
+                if y.username == self.reciever:
                     self.reciever = y
                     break
             else:
                 self.reciever = None
-        self.items = items
+        self.items = items[0]
 
     def run_protocol(self):
         try:
-            print(self.items)
             if self.reciever is None:
                 raise ProtocolException(self, "Cannot fetch wallet")
             if self.reciever == self.signer:
                 raise ProtocolException(self, "You cannot send money to yourself")
-            if len(self.items) != 1:
+            if len(self.items) == 0:
                 raise ProtocolException(self, "Invalid credentials")
 
             total_curr = 0.0
+            it = []
             for i in self.items:
-                print(i[:-1])
-                if i[len(i) - 1] == "$" and float(i[:-1]):
-                    total_curr += float(i[:-1])/float(self.signer.wallet.currency.dollar_price)
+                if i[:2] == "T_":
+                    for z in self.signer.items:
+                        if z.token == i:
+                            it.append(z)
+                    else:
+                        raise ProtocolException(self, "You don't own item, with this token: " + i)
+                elif i[len(i) - 1] == "$" and float(i[:-1]):
+                    total_curr += float(i[:-1]) / float(self.signer.wallet.currency.dollar_price)
                 elif float(i):
                     total_curr = float(i)
                 else:
@@ -56,6 +61,9 @@ class Hand2HandProtocol(Protocol):
                 if ret == 0:
                     raise ProtocolException(self, "H2H cannot proceed payment - too high amount")
                 self.reciever.wallet.accept_income(self.reciever.wallet.hash, total_curr)
+            self.reciever.items.extend(it)
+            for i in it:
+                self.signer.items.remove(i)
             # register to transactions
             self.database.proto_archive.append({
                 "protocol_id": self.id,
@@ -65,10 +73,12 @@ class Hand2HandProtocol(Protocol):
                 "success": self.valid,
                 "details": [
                     "Hand2Hand Protocol HEADER",
-                    f"Reciever: {self.reciever}"
+                    f"Reciever: {self.reciever}",
+                    f"sent_items: {it}"
                 ]
             })
-            self.database.emit_server_message(f"{self.signer.public_key.hex()} sent {self.reciever.public_key.hex()} {total_curr} {self.reciever.wallet.currency.name}")
+            self.database.emit_server_message(
+                f"{self.signer.public_key.hex()} sent {self.reciever.public_key.hex()} {total_curr} {self.reciever.wallet.currency.name}")
 
         except ProtocolException as e:
             self.valid = False
@@ -86,5 +96,5 @@ class Hand2HandProtocol(Protocol):
             })
 
     def dollar_str_to_float(self, string):
-        if string[len(str)-1] == "$":
+        if string[len(str) - 1] == "$":
             return string[:-1]
