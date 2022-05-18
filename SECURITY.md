@@ -1,7 +1,7 @@
 # Security Policy
 
 ## Why you should report vulnerabilties
-Well, UniPy is a cryptocurrency system. It basically allows to transfer "funds" from user to user. Although, currencies are just a few bits aligned together, some people (including me) think that those coins have a value\
+Well, UniPy is a cryptocurrency system. It basically allows to transfer "funds" from user to user. Although, currencies are just a few bits aligned together, some people (including me) think that those bits have a value\
 So, it will make this system fair and (most importantly) decentralized for everyone.
 
 ## Reporting a Vulnerability
