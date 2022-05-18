@@ -1,4 +1,4 @@
-from Currency import Currency
+import Currency
 
 
 class Wallet:

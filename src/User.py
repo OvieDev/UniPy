@@ -4,7 +4,7 @@ import random
 import base64
 import bcrypt
 
-from Database import Database
+import Database
 from Wallet import Wallet
 import Protocols.CommandSendProtocol
 

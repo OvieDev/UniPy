@@ -1,7 +1,7 @@
 from ProtocolException import ProtocolException
 import datetime
 
-from Database import Database
+import Database
 import User
 
 

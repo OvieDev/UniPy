@@ -2,6 +2,8 @@ import os
 import random
 from datetime import datetime
 
+from src.Protocols.MintProtocol import MintProtocol
+
 
 def help_command(arg, proto):
     print("""
@@ -44,3 +46,8 @@ def pay_command(arg, proto):
 
 def client_command(arg, proto):
     return True
+
+
+def mint_command(arg, proto):
+    p = MintProtocol(proto.signer, random.randint(0, 9999999), datetime.now(), proto.database, arg[1], arg[0], arg[2])
+    p.run_protocol()

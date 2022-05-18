@@ -4,9 +4,7 @@ from datetime import datetime
 
 import bcrypt
 
-from Database import Database
-
-from User import User
+from src.User import User, Database
 from src.Protocols import UserManagment
 from src.Protocols.UserManageProtocol import UserManageProtocol
 
@@ -63,11 +61,12 @@ def client_select():
                                           user_ptr).run_protocol()
         elif a == "4":
             print("deleting")
-            user_ptr = UserManageProtocol(t, datetime.now(), db, UserManagment.UserManagment.DELETE, user_ptr).run_protocol()
+            user_ptr = UserManageProtocol(t, datetime.now(), db, UserManagment.UserManagment.DELETE,
+                                          user_ptr).run_protocol()
             print(user_ptr)
 
 
-db = Database()
+db = Database.Database()
 admin = User(True, db.wallets[0], "admin", db)
 os.environ["_BITMASK"] = bcrypt.hashpw(str(admin.bitmask).encode("utf-8"),
                                        bcrypt.gensalt()).hex()
