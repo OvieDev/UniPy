@@ -8,7 +8,7 @@ def subscribe_to_event(name: str = "", *args, **kwargs):
     def inner(func):
         for k in events.keys():
             if k == name:
-                function_dict = {"event_args": kwargs, "function": lambda: func(args)}
+                function_dict = {"event_args": kwargs, "function": lambda: func(kwargs, args)}
                 events.get(k).append(function_dict)
                 break
         else:
@@ -38,3 +38,5 @@ def call_event(name: str, **kwargs):
         except TypeError:
             pass
             # yes i understand that's nooby, but it works ok
+
+
