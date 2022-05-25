@@ -1,7 +1,9 @@
 import os
 import random
 from datetime import datetime
+import src.Events.Event
 
+from src.Protocols.AuctionProtocol import AuctionProtocol
 from src.Protocols.MintProtocol import MintProtocol
 
 
@@ -51,3 +53,13 @@ def client_command(arg, proto):
 def mint_command(arg, proto):
     p = MintProtocol(proto.signer, random.randint(0, 9999999), datetime.now(), proto.database, arg[1], arg[0], arg[2])
     p.run_protocol()
+
+
+def mk_auction_command(arg, proto):
+    p = AuctionProtocol(proto.signer, random.randint(0, 9999999), datetime.now(), proto.database, arg[0],
+                        datetime.now(), arg[2])
+    p.run_protocol()
+
+
+def bid_command(arg, proto):
+    src.Events.Event.call_event("on_auction_bid", db=proto.database, money=arg[1], auction=arg[0], bidder=proto.signer)

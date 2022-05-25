@@ -23,6 +23,7 @@ class Database:
         self.log = []
         self.transactions = []
         self.connected_users = []
+        self.auctions = []
 
         def create_session():
             while True:

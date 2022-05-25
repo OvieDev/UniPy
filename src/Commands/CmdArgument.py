@@ -7,3 +7,4 @@ class CmdArgument(Enum):
     FLOAT = 2
     BOOL = 3
     STRING_ARGS = 4
+    HOURDATE = 5 # TODO: implement HOURDATE
