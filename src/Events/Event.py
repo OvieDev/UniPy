@@ -1,6 +1,7 @@
 events = {
     "on_command": [],
-    "on_payed": []
+    "on_payed": [],
+    "on_auction_bid": []
 }
 
 
@@ -8,7 +9,7 @@ def subscribe_to_event(name: str = "", *args, **kwargs):
     def inner(func):
         for k in events.keys():
             if k == name:
-                function_dict = {"event_args": kwargs, "function": lambda: func(kwargs, args)}
+                function_dict = {"event_args": kwargs, "function": lambda x: func(kwargs, x, args)}
                 events.get(k).append(function_dict)
                 break
         else:
@@ -32,11 +33,9 @@ def call_event(name: str, **kwargs):
                         if not i["event_args"][v] == list(kwargs.values())[k]:
                             should = False
             if should:
-                i["function"]()
+                i["function"](kwargs)
             else:
                 raise TypeError
         except TypeError:
-            pass
+            break
             # yes i understand that's nooby, but it works ok
-
-

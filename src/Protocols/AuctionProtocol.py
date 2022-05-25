@@ -3,11 +3,12 @@ import string
 from datetime import datetime
 import random
 
+from src import User
 from src.Database import Database
+from src.Events.Event import subscribe_to_event
 from src.Item import Item
 from src.Protocol import Protocol
 from src.ProtocolException import ProtocolException
-from src.User import User
 
 import bcrypt
 
@@ -19,7 +20,8 @@ class AuctionProtocol(Protocol):
         self.__initial = initial_bid
         self.bid = initial_bid
         self.auction_until = until
-        self.auctionid = bcrypt.kdf(str(random.choices(string.ascii_letters, k=32)).encode(), bcrypt.gensalt(), 22, 32)
+        self.auctionid = bcrypt.kdf(str(random.choices(string.ascii_letters, k=32)).encode(), bcrypt.gensalt(), 22,
+                                    32).hex()
         self.holder = None
         self.item = item_sold
 
@@ -33,18 +35,25 @@ class AuctionProtocol(Protocol):
                         1 * (self.auction_until.hour - self.time.hour))) == 0:
                     raise ProtocolException(self, "Cannot proceed the payment")
                 else:
-                    asyncio.run(self.bid_loop())
+                    print(self.auctionid)
+                    self.database.auctions.append(self)
+            else:
+                del self
         except ProtocolException as e:
             print(e)
 
-    # TODO: Do something with bid loop cuz i don't know how async works lol :)
-    async def bid_loop(self):
-        while True:
-            await asyncio.sleep(1)
-            # if datetime.now() >= self.auction_until:
-            #     if self.holder is not None:
-            #         self.holder.items.append(self.item)
-            #         self.signer.items.remove(self.item)
-            #         del self
-            #     else:
-            #         self.signer.wallet.accept_income(self.signer.wallet.hash, self.__initial)
+    @staticmethod
+    @subscribe_to_event("on_auction_bid")
+    def on_bid(kwargs, opt_args, *args):
+        for i in opt_args["db"].auctions:
+            if i.auctionid == opt_args["auction"] and opt_args["money"] > i.bid:
+                if opt_args["bidder"].wallet.pay_and_return_value(
+                        opt_args["bidder"].wallet.currency.dollar_to_coin(opt_args["money"])) is True:
+                    i.bid = opt_args["money"]
+                    i.holder = opt_args["bidder"]
+                    print(f"Success! {i.auctionid} {i.bid}")
+                    break
+                else:
+                    print("Cannot bid!")
+        else:
+            print("Cannot find auction")

@@ -17,7 +17,7 @@ class Wallet:
             print(f"Payment completed successfully! Amount left: {self.amount - amount}")
             self.amount -= amount
             self.__transactions.append(f"PAY/{amount}")
-            return amount
+            return True
 
     def pay_with_dollars(self, dollar_val):
         amount = dollar_val / self.currency.dollar_price

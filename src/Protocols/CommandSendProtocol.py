@@ -18,7 +18,9 @@ class CommandSendProtocol(Protocol):
                          Command("pay", [False, False, True], self, pay_command, CmdArgument.STRING, CmdArgument.STRING_ARGS),
                          Command("client", [False, False, True], self, client_command),
                          Command("mint", [False, False, True], self, mint_command, CmdArgument.STRING, CmdArgument.FLOAT,
-                                 CmdArgument.BOOL)]
+                                 CmdArgument.BOOL),
+                         Command("mk_auction", [False, False, True], self, mk_auction_command, CmdArgument.FLOAT, CmdArgument.STRING, CmdArgument.STRING),
+                         Command("bid", [False, False, True], self, bid_command, CmdArgument.STRING, CmdArgument.FLOAT)]
         self.command_sent = command
         if len(args)>0:
             self.arguments = list(args)[0]
