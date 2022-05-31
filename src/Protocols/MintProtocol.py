@@ -55,5 +55,6 @@ class MintProtocol(Protocol):
                 if self.signer.wallet.pay_with_dollars(float(m) * self.amount + len(d)) == 0:
                     raise ProtocolException(self, "Cannot proceed payment. Amount too high")
                 self.signer.items.append(Item(self.itemname, self.signer, int(self.amount), d, float(m)))
+                print(self.signer.items[len(self.signer.items)-1].token)
         except ProtocolException as e:
             print(e)

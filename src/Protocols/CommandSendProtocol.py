@@ -19,7 +19,8 @@ class CommandSendProtocol(Protocol):
                          Command("client", [False, False, True], self, client_command),
                          Command("mint", [False, False, True], self, mint_command, CmdArgument.STRING, CmdArgument.FLOAT,
                                  CmdArgument.BOOL),
-                         Command("mk_auction", [False, False, True], self, mk_auction_command, CmdArgument.FLOAT, CmdArgument.STRING, CmdArgument.STRING),
+                         Command("mk_auction", [False, False, True], self, mk_auction_command, CmdArgument.FLOAT,
+                                 CmdArgument.HOURDATE, CmdArgument.STRING),
                          Command("bid", [False, False, True], self, bid_command, CmdArgument.STRING, CmdArgument.FLOAT)]
         self.command_sent = command
         if len(args)>0:

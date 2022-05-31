@@ -9,14 +9,16 @@ from src.Protocols.MintProtocol import MintProtocol
 
 def help_command(arg, proto):
     print("""
-                 USER COMMANNDS:
-                  - ses_create: Creates session for default wallet currency for 30$
-                  - transactions: Preview all your transactions
-                  - server_console (ADMIN-ONLY): Goes to the server
-                  - cls (SERVER AND USER): Clears console
-    
-                 SERVER COMMANDS (ADMIN-ONLY):
-                  - user_mode: Goes back to user view
+             USER COMMANNDS:
+              - ses_create: Creates session for 5$ each
+              - server_console (ADMIN-ONLY): Goes to the server
+              - cls (SERVER AND USER): Clears console
+              - server-mode (ADMIN-ONLY): Gives access to server mode
+              - pay [receiver: public key] [amount: float or dollar string]: Pay someone some currency
+              - client: Access client console
+              - mint [type: boolean] [item_amount: integer] [name: string]: Mint a token (hint: if type is true, then it's an item, else it's a currency)
+              - mk_auction [initial_bid: float or int] [until: date] [token: token]: Make an auction for a token
+              - bid [auction: auction_id] [bid: float or int]: Bid on an auction
                  """)
 
 
