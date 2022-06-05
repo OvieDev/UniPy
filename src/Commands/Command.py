@@ -12,6 +12,26 @@ from src.ProtocolException import ProtocolException
 # Flag #2: View requirement - True is user view, False is server view
 #
 
+def hourdate_modifications(sec, min, hou, day, mon, yea):
+    while sec >= 60:
+        sec -= 60
+        min += 1
+    while min >= 60:
+        hou += 1
+        min -= 60
+    while hou >= 24:
+        day += 1
+        hou -= 24
+    while day >= 30:
+        mon += 1
+        day -= 30
+    while mon >= 12:
+        yea += 1
+        mon -= 12
+
+    return [sec,min,hou, day, mon, yea]
+
+
 class Command:
     def __init__(self, command_name: str, flags: list, user: Protocol, func, *args):
         self.command_name = command_name
@@ -68,6 +88,8 @@ class Command:
 
                     if functools.reduce(lambda a, b: a + b, n_times) <= 0:
                         raise AttributeError("Invalid date formatting")
+
+                    n_times = hourdate_modifications(n_times[0], n_times[1], n_times[2], n_times[3], n_times[4], n_times[5])
 
                     ni = datetime.datetime.combine(datetime.date(datetime.datetime.now().year + n_times[5],
                                                                  datetime.datetime.now().month + n_times[4],

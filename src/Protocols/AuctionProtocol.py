@@ -20,7 +20,7 @@ class AuctionProtocol(Protocol):
         self.__initial = initial_bid
         self.bid = initial_bid
         self.auction_until = until
-        self.auctionid = bcrypt.kdf(str(random.choices(string.ascii_letters, k=32)).encode(), bcrypt.gensalt(), 22,
+        self.auctionid = bcrypt.kdf(str(random.choices(string.ascii_letters, k=40)).encode(), bcrypt.gensalt(), 22,
                                     32).hex()
         self.holder = None
         self.item = item_sold
