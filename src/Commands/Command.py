@@ -117,6 +117,6 @@ class Command:
 
             return self.command_function(args, self.user)
 
-        except Exception as e:
+        except IndexError as e:
             print("Exception while doing command")
             print(e)

@@ -12,12 +12,12 @@ class Wallet:
     def pay_and_return_value(self, amount):
         if self.amount - amount < 0:
             print("Cannot proceed payment. Amount too high to be extracted from wallet")
-            return 0
+            return False
         else:
             print(f"Payment completed successfully! Amount left: {self.amount - amount}")
             self.amount -= amount
             self.__transactions.append(f"PAY/{amount}")
-            return True
+            return amount
 
     def pay_with_dollars(self, dollar_val):
         amount = dollar_val / self.currency.dollar_price

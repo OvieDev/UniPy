@@ -5,6 +5,7 @@ import src.Events.Event
 
 from src.Protocols.AuctionProtocol import AuctionProtocol
 from src.Protocols.MintProtocol import MintProtocol
+from src.Protocols.SalesProtocol import SalesProtocol
 
 
 def help_command(arg, proto):
@@ -44,8 +45,11 @@ def server_mode_move_command(arg, proto):
 
 def pay_command(arg, proto):
     from src.Protocols.Hand2HandProtocol import Hand2HandProtocol
-    h2h = Hand2HandProtocol(proto.signer, random.randint(0, 99999999), datetime.now(), proto.database, arg[0], [arg[1]])
-    h2h.run_protocol()
+    if arg[0] == "SALE" and arg[1][0][0:4]=="SALE":
+        sale = SalesProtocol.pay_for_saleID(arg[0], proto.signer)
+    else:
+        h2h = Hand2HandProtocol(proto.signer, random.randint(0, 99999999), datetime.now(), proto.database, arg[0], [arg[1]])
+        h2h.run_protocol()
 
 
 def client_command(arg, proto):

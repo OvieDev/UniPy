@@ -23,6 +23,7 @@ class User:
         self.public_key = bcrypt.kdf(base64.b64encode((self.username+str(random.choices(chars,k=32))).encode("utf-8")), bcrypt.gensalt(), 16, 64)
         self.items = []
         self.bitmask = []
+        self.shortcuts = []
         for i in range(8):
             self.bitmask.append(bcrypt.kdf(base64.b64encode(str(random.choices(chars, k=64)).encode("utf-8")), bcrypt.gensalt(), 32, 64))
 
