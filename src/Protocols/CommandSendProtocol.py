@@ -17,8 +17,8 @@ class CommandSendProtocol(Protocol):
                          Command("server_mode", [True, False, None], self, server_mode_move_command),
                          Command("pay", [False, False, True], self, pay_command, CmdArgument.STRING, CmdArgument.STRING_ARGS),
                          Command("client", [False, False, True], self, client_command),
-                         Command("mint", [False, False, True], self, mint_command, CmdArgument.STRING, CmdArgument.FLOAT,
-                                 CmdArgument.BOOL),
+                         Command("mint", [False, False, True], self, mint_command, CmdArgument.BOOL, CmdArgument.FLOAT,
+                                 CmdArgument.STRING),
                          Command("mk_auction", [False, False, True], self, mk_auction_command, CmdArgument.FLOAT,
                                  CmdArgument.HOURDATE, CmdArgument.STRING),
                          Command("bid", [False, False, True], self, bid_command, CmdArgument.STRING, CmdArgument.FLOAT)]

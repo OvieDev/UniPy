@@ -52,7 +52,10 @@ class Command:
                 elif self.arguments[c] == CmdArgument.FLOAT:
                     ni = float(i)
                 elif self.arguments[c] == CmdArgument.BOOL:
-                    ni = bool(i)
+                    if i=="false" or i=="0":
+                        ni=False
+                    else:
+                        ni=True
                 elif self.arguments[c] == CmdArgument.STRING_ARGS:
                     l = []
                     for n, y in enumerate(args):

@@ -57,6 +57,8 @@ def client_command(arg, proto):
 
 
 def mint_command(arg, proto):
+    print(arg[2])
+    print(bool(arg[0]))
     p = MintProtocol(proto.signer, random.randint(0, 9999999), datetime.now(), proto.database, arg[1], arg[0], arg[2])
     p.run_protocol()
 
