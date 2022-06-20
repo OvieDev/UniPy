@@ -33,6 +33,6 @@ class Challenge:
                             self.questions[pointer] -= 1
                             self.teachers[pointer].wallet.accept_income(self.teachers[pointer].wallet.hash,
                                                                         self.session.rate)
-                            self.session.db.emit_server_message("Miner with wallet: ")
+                            self.session.db.emit_server_message("Mining with wallet: ")
                     else:
                         continue

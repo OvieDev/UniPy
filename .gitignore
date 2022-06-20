@@ -5,3 +5,4 @@ src/__init__.py
 /.idea
 src/Events/__init__.py
 __init__.py
+src/Mining/__init__.py
