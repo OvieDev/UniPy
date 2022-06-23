@@ -1,8 +1,9 @@
 import json
+from MiningMode import MiningMode
 
 
 class Miner:
-    def __init__(self, db, minername, walletid, session, mode: int, *args):
+    def __init__(self, db, minername, walletid, session, mode: MiningMode, *args):
         self.name = minername
         self.wallet = walletid
         self.sessionid = session
@@ -18,4 +19,24 @@ class Miner:
             del self
 
     async def returnTaskResult(self, sent_task: str):
-        return sent_task
+        try:
+            code = json.loads(sent_task)
+            calls = code["function-main"]["calls"]
+            identifiers = {}
+            for index, element in enumerate(calls):
+                if "identifier" in element:
+                    identifiers[f"{element['identifier']}-main"] = [
+                        element["type"],
+                        element["value"],
+                        element["modifiers"]
+                    ]
+                elif "operation" in element:
+                    if element["operation"]=="out":
+                        print(element["operand"])
+                    elif element["operation"]=="in":
+                        a = input()
+                        identifiers[f"{element['operand']}-main"][2] = a
+        except Exception as e:
+            print("exception while executing ")
+            print(e)
+

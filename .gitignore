@@ -6,3 +6,4 @@ src/__init__.py
 src/Events/__init__.py
 __init__.py
 src/Mining/__init__.py
+src/Mining/Unison/__init__.py
