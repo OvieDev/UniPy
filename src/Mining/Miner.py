@@ -1,4 +1,6 @@
 import json
+import os
+
 from MiningMode import MiningMode
 
 
@@ -18,25 +20,12 @@ class Miner:
         else:
             del self
 
-    async def returnTaskResult(self, sent_task: str):
+    async def returnTaskResult(self, sent_task):
         try:
-            code = json.loads(sent_task)
-            calls = code["function-main"]["calls"]
-            identifiers = {}
-            for index, element in enumerate(calls):
-                if "identifier" in element:
-                    identifiers[f"{element['identifier']}-main"] = [
-                        element["type"],
-                        element["value"],
-                        element["modifiers"]
-                    ]
-                elif "operation" in element:
-                    if element["operation"]=="out":
-                        print(element["operand"])
-                    elif element["operation"]=="in":
-                        a = input()
-                        identifiers[f"{element['operand']}-main"][2] = a
+            os.system(f"java -jar {sent_task}.jar")
+            return True
         except Exception as e:
             print("exception while executing ")
             print(e)
+            return False
 
